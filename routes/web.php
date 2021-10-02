@@ -16,7 +16,3 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::post('/question', [\App\Http\Controllers\QuestionController::class, 'createQuestion']);
-Route::put('/question', [\App\Http\Controllers\QuestionController::class, 'updateQuestion']);
-Route::get('/questions', [\App\Http\Controllers\QuestionController::class, 'listAllQuestions']);

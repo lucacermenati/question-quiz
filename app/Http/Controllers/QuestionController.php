@@ -6,7 +6,7 @@ class QuestionController extends Controller
 {
     public function listAllQuestions()
     {
-        return;
+        return 'CIAO';
     }
 
     public function createQuestion()
