@@ -31,7 +31,9 @@ class Authenticator
 
         if(!$user)  throw new UserNotFoundException();
 
-        $user->token = $this->tokenGenerator->generate()->token;
+        $user->token = $this->tokenGenerator
+            ->generate($user->role)
+            ->token;
 
         $user->save();
 

@@ -3,44 +3,46 @@
 namespace App\Http\Controllers;
 
 use App\Enum\Roles;
-use App\Models\CustomUser;
+use App\Service\ExceptionHandler;
+use App\Service\TokenValidator;
+use App\Service\UserCreator;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     public function getUser()
     {
-        return ;
+        return;
     }
 
     public function getUsers()
     {
-        return ;
+        return;
     }
 
-    public function createUser()
-    {
-        $user = CustomUser::create([
-            'email' => 'lucacermenati.lc@gmail.com',
-            'password' => 'luca',
-            'roles' => [
-                Roles::ROLE_MANAGER,
-                Roles::ROLE_PLAYER
-            ]
-        ]);
+    public function createUser(
+        TokenValidator $tokenValidator,
+        UserCreator $userCreator,
+        Request $request,
+        ExceptionHandler $exceptionHandler
+    ) {
+        try {
+            $tokenValidator->validate($request->token, [
+                Roles::ROLE_ADMIN
+            ]);
 
-        $user->save();
-//        $user = new CustomUser();
-//
-//        $user->setEmail('lucacermenati.lc@gmail.com');
-//        $user->setPassword('luca');
-//        $user->setRoles([
-//            Roles::ROLE_MANAGER,
-//            Roles::ROLE_PLAYER,
-//        ]);
-//
-//        $user->save();
-//
-//        return $user;
+            $this->setResponseSucceeded($userCreator->create(
+                $request->email,
+                $request->password,
+                $request->role
+            ));
+        } catch (\Exception $exception) {
+            $this->setResponseFailed(...$exceptionHandler->handle(
+                $exception
+            ));
+        }
+
+        return $this->response;
     }
 
     public function updateUser()

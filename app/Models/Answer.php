@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Token extends Model
+class Answer extends Model
 {
     use HasFactory;
 
     public $fillable = [
-        'token',
-        'role',
+        'text',
+        'isCorrect',
     ];
 }

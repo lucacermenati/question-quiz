@@ -6,10 +6,11 @@ use App\Models\Token;
 
 class TokenGenerator
 {
-    public function generate()
+    public function generate($role)
     {
         $token = Token::create([
-            'token' => uniqid()
+            'token' => uniqid(),
+            'role' => $role,
         ]);
 
         $token->save();

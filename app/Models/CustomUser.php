@@ -15,9 +15,4 @@ class CustomUser extends Model
         'role',
         'token',
     ];
-
-    public function tokens()
-    {
-        return $this->hasMany(Token::class);
-    }
 }

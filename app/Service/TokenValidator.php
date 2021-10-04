@@ -2,25 +2,49 @@
 
 namespace App\Service;
 
+use App\Exceptions\MissingTokenException;
+use App\Exceptions\TokenNotFoundException;
+use App\Exceptions\UserNotAuthorizedException;
 use App\Models\Token;
 
 class TokenValidator
 {
     public function validate($tokenValue, $validRoles)
     {
-        $this->validateExpiration($tokenValue);
-        $this->validateRoles($tokenValue, $validRoles);
+        $this->validateTokenValue($tokenValue);
+
+        $token = Token::where('token', $tokenValue)
+            ->first();
+
+        $this->validateToken($token);
+        $this->validateExpiration($token->updated_at);
+        $this->validateRole($token->role, $validRoles);
     }
 
-    public function validateExpiration()
+    public function validateTokenValue($tokenValue)
+    {
+        if(!$tokenValue) {
+            throw new MissingTokenException();
+        }
+    }
+
+    public function validateToken($token)
+    {
+        if(!$token) {
+            throw new TokenNotFoundException();
+        }
+    }
+
+    public function validateExpiration($updatedAt)
     {
         //TODO complete
         return;
     }
 
-    public function validateRoles($tokenValue, $validRoles)
+    public function validateRole($role, $validRoles)
     {
-        //TODO complete
-        return;
+        if(!in_array($role, $validRoles)) {
+            throw new UserNotAuthorizedException();
+        }
     }
 }
