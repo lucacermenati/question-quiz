@@ -2,33 +2,39 @@
 
 namespace App\Service;
 
+use App\Exceptions\UserNotFoundException;
 use App\Models\CustomUser;
 use App\Models\Token;
 
 class Authenticator
 {
+    /** @var TokenGenerator */
+    private $tokenGenerator;
+
+    /** @codeCoverageIgnore */
+    public function __construct(TokenGenerator $tokenGenerator)
+    {
+        $this->tokenGenerator = $tokenGenerator;
+    }
+
+    /**
+     * @param $email
+     * @param $password
+     * @return mixed
+     * @throws UserNotFoundException
+     */
     public function authenticate($email, $password)
     {
-        $user = CustomUser::where('email', "=", $email)->first();
+        $user = CustomUser::where('email', $email)
+            ->where('password', $password)
+            ->first();
 
-        if(!$user) {
-            throw new \Exception("Users not found");
-        }
+        if(!$user)  throw new UserNotFoundException();
 
-        $user->token = $this->generateToken();
+        $user->token = $this->tokenGenerator->generate()->token;
+
         $user->save();
 
         return $user;
-    }
-
-    public function generateToken()
-    {
-        $token = Token::create([
-            'token' => uniqid()
-        ]);
-
-        $token->save();
-
-        return $token;
     }
 }
