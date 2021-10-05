@@ -13,8 +13,9 @@ class TokenValidator
     {
         $this->validateTokenValue($tokenValue);
 
-        $token = Token::where('token', $tokenValue)
-            ->first();
+        $token = Token::where([
+            'token' => $tokenValue,
+        ])->first();
 
         $this->validateToken($token);
         $this->validateExpiration($token->updated_at);

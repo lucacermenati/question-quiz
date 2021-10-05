@@ -25,11 +25,14 @@ class Authenticator
      */
     public function authenticate($email, $password)
     {
-        $user = CustomUser::where('email', $email)
-            ->where('password', $password)
-            ->first();
+        $user = CustomUser::where([
+            'email' => $email,
+            'password' => $password
+        ])->first();
 
-        if(!$user)  throw new UserNotFoundException();
+        if(!$user) {
+            throw new UserNotFoundException();
+        }
 
         $user->token = $this->tokenGenerator
             ->generate($user->role)

@@ -12,7 +12,7 @@ class AnswersCreator
         $this->createWrong($questionId, $wrongAnswers);
     }
 
-    private function createCorrect($questionId, $correctAnswer)
+    public function createCorrect($questionId, $correctAnswer)
     {
         $answer = Answer::create([
             'question' => $questionId,
@@ -23,7 +23,7 @@ class AnswersCreator
         $answer->save();
     }
 
-    private function createWrong($questionId, $wrongAnswers)
+    public function createWrong($questionId, $wrongAnswers)
     {
         foreach ($wrongAnswers as $wrongAnswer) {
             $answer = Answer::create([

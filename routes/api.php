@@ -29,5 +29,5 @@ Route::post('/user', [\App\Http\Controllers\UserController::class, 'createUser']
 
 // QUESTION
 Route::post('/question', [\App\Http\Controllers\QuestionController::class, 'createQuestion']);
-Route::put('/question', [\App\Http\Controllers\QuestionController::class, 'updateQuestion']);
+Route::put('/question/{id}', [\App\Http\Controllers\QuestionController::class, 'updateQuestion']);
 Route::get('/questions', [\App\Http\Controllers\QuestionController::class, 'listQuestions']);

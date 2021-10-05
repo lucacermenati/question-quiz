@@ -7,6 +7,7 @@ use App\Service\ExceptionHandler;
 use App\Service\QuestionCreator;
 use App\Service\QuestionRequestValidator;
 use App\Service\QuestionRetriever;
+use App\Service\QuestionUpdater;
 use App\Service\TokenValidator;
 use Illuminate\Http\Request;
 
@@ -55,7 +56,7 @@ class QuestionController extends Controller
                 Roles::ROLE_MANAGER
             ]);
 
-            $this->setResponseSucceeded($questionRetriever->getAll());
+            $this->setResponseSucceeded($questionRetriever->getAll()); //TODO: show with Answers
         } catch (\Exception $exception) {
             $this->setResponseFailed(...$exceptionHandler->handle(
                 $exception
@@ -65,8 +66,30 @@ class QuestionController extends Controller
         return $this->response;
     }
 
-    public function updateQuestion()
-    {
-        return;
+    public function updateQuestion(
+        TokenValidator $tokenValidator,
+        QuestionUpdater $questionUpdater,
+        Request $request,
+        ExceptionHandler $exceptionHandler
+    ) {
+        try {
+            $tokenValidator->validate($request->token, [
+                Roles::ROLE_ADMIN,
+                Roles::ROLE_MANAGER
+            ]);
+
+            $this->setResponseSucceeded($questionUpdater->update(
+                $request->id,
+                $request->question,
+                $request->correctAnswer,
+                $request->wrongAnswers
+            ));
+        } catch (\Exception $exception) {
+            $this->setResponseFailed(...$exceptionHandler->handle(
+                $exception
+            ));
+        }
+
+        return $this->response;
     }
 }
