@@ -28,6 +28,6 @@ Route::put('/user', [\App\Http\Controllers\UserController::class, 'updateUser'])
 Route::post('/user', [\App\Http\Controllers\UserController::class, 'createUser']);
 
 // QUESTION
-Route::get('/questions', [\App\Http\Controllers\QuestionController::class, 'listAllQuestions']);
-Route::put('/question', [\App\Http\Controllers\QuestionController::class, 'updateQuestion']);
 Route::post('/question', [\App\Http\Controllers\QuestionController::class, 'createQuestion']);
+Route::put('/question', [\App\Http\Controllers\QuestionController::class, 'updateQuestion']);
+Route::get('/questions', [\App\Http\Controllers\QuestionController::class, 'listQuestions']);
