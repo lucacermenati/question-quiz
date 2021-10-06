@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enum\Roles;
 use App\Http\Resources\QuestionCollectionResource;
 use App\Service\ExceptionHandler;
+use App\Service\QuestionCollectionBeautifier;
 use App\Service\QuestionCreator;
 use App\Service\QuestionRequestValidator;
 use App\Service\QuestionRetriever;
@@ -48,6 +49,7 @@ class QuestionController extends Controller
     public function listQuestions(
         TokenValidator $tokenValidator,
         QuestionRetriever $questionRetriever,
+        QuestionCollectionBeautifier $questionCollectionBeautifier,
         Request $request,
         ExceptionHandler $exceptionHandler
     ) {
@@ -57,9 +59,9 @@ class QuestionController extends Controller
                 Roles::ROLE_MANAGER
             ]);
 
-            $response = new QuestionCollectionResource($questionRetriever->getAllWithAnswers());
+            $questions = $questionRetriever->getAllWithAnswers();
 
-            $this->setResponseSucceeded($response);
+            $this->setResponseSucceeded($questionCollectionBeautifier->beautify($questions));
         } catch (\Exception $exception) {
             var_dump($exception->getMessage());
             $this->setResponseFailed(...$exceptionHandler->handle(
