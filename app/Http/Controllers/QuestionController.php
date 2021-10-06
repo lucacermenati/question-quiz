@@ -36,7 +36,7 @@ class QuestionController extends Controller
                 $request->wrongAnswers
             );
 
-            $this->setResponseSucceeded($question->setAnswers());
+            $this->setResponseSucceeded($question);
         } catch (\Exception $exception) {
             $this->setResponseFailed(...$exceptionHandler->handle(
                 $exception
@@ -63,7 +63,6 @@ class QuestionController extends Controller
 
             $this->setResponseSucceeded($questionCollectionBeautifier->beautify($questions));
         } catch (\Exception $exception) {
-            var_dump($exception->getMessage());
             $this->setResponseFailed(...$exceptionHandler->handle(
                 $exception
             ));
