@@ -16,8 +16,6 @@ class Controller extends BaseController
 
     public function setResponseSucceeded($content)
     {
-        $content["success"] = true;
-
         $this->response = response($content, HttpStatusCode::SUCCESS);
     }
 

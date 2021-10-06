@@ -9,8 +9,6 @@ class Question extends Model
 {
     use HasFactory;
 
-    protected $answers;
-
     public $fillable = [
         'text',
     ];
@@ -18,11 +16,5 @@ class Question extends Model
     public function answers()
     {
         return $this->hasMany(Answer::class);
-    }
-
-    public function setAnswers()
-    {
-        $this->answers = $this->answers();
-        return $this;
     }
 }

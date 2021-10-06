@@ -2,12 +2,16 @@
 
 namespace App\Service;
 
+use App\Models\Answer;
 use App\Models\Question;
+use Illuminate\Support\Facades\DB;
 
 class QuestionRetriever
 {
-    public function getAll()
+    public function getAllWithAnswers()
     {
-        return Question::all()->toArray();
+        return Question::query()
+            ->join('answers', 'questions.id', '=', 'answers.question_id')
+            ->get(["questions.*", 'answers.text as answer_text', 'answers.is_correct']);
     }
 }

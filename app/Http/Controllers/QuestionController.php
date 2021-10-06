@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enum\Roles;
+use App\Http\Resources\QuestionCollectionResource;
 use App\Service\ExceptionHandler;
 use App\Service\QuestionCreator;
 use App\Service\QuestionRequestValidator;
@@ -56,8 +57,11 @@ class QuestionController extends Controller
                 Roles::ROLE_MANAGER
             ]);
 
-            $this->setResponseSucceeded($questionRetriever->getAll()); //TODO: show with Answers
+            $response = new QuestionCollectionResource($questionRetriever->getAllWithAnswers());
+
+            $this->setResponseSucceeded($response);
         } catch (\Exception $exception) {
+            var_dump($exception->getMessage());
             $this->setResponseFailed(...$exceptionHandler->handle(
                 $exception
             ));
