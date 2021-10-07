@@ -7,6 +7,7 @@ use App\Service\ExceptionHandler;
 use App\Service\GameCreator;
 use App\Service\GameManager;
 use App\Service\GameRetriever;
+use App\Service\StatsCalculator;
 use App\Service\TokenValidator;
 use Illuminate\Http\Request;
 
@@ -107,6 +108,36 @@ class GameController extends Controller
                 $request->token,
                 $request->game_id,
             ));
+        } catch (\Exception $exception) {
+            $this->setResponseFailed(...$exceptionHandler->handle(
+                $exception
+            ));
+        }
+
+        return $this->response;
+    }
+
+    public function getStats(
+        TokenValidator $tokenValidator,
+        StatsCalculator $statsCalculator,
+        Request $request,
+        ExceptionHandler $exceptionHandler
+    ) {
+        try {
+            $tokenValidator->validate($request->token, [
+                Roles::ROLE_ADMIN,
+                Roles::ROLE_MANAGER,
+                Roles::ROLE_PLAYER,
+            ]);
+
+            $token = $request->token;
+            $gameId = $request->game_id;
+
+            $this->setResponseSucceeded([
+                "total" => $statsCalculator->calculateTotalQuestions($token, $gameId),
+                "percentage_answered" => $statsCalculator->calculateAnsweredQuestions($token, $gameId),
+                "percentage_correct" => $statsCalculator->calculateCorrectQuestions($token, $gameId),
+            ]);
         } catch (\Exception $exception) {
             $this->setResponseFailed(...$exceptionHandler->handle(
                 $exception

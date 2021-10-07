@@ -24,6 +24,7 @@ class GameRetriever
 
     public function get($token, $gameId)
     {
+        //TODO remove correct answers from the list
         $game =  Game::query()
         ->join('questions', 'questions.id', '=', 'games.question_id')
         ->join('answers', 'questions.id', '=', 'answers.question_id')

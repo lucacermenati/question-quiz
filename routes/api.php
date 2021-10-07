@@ -35,5 +35,7 @@ Route::get('/questions', [\App\Http\Controllers\QuestionController::class, 'list
 // GAME
 Route::post('/game', [\App\Http\Controllers\GameController::class, 'createGame']);
 Route::get('/game', [\App\Http\Controllers\GameController::class, 'getGame']);
+Route::get('/game/stats', [\App\Http\Controllers\GameController::class, 'getStats']);
 Route::put('/game/play', [\App\Http\Controllers\GameController::class, 'playGame']);
+Route::put('/game/reset', [\App\Http\Controllers\GameController::class, 'resetGame']);
 

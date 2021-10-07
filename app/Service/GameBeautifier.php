@@ -8,6 +8,8 @@ class GameBeautifier
     {
         $result = [];
 
+        //TODO: ADD Game ID
+
         foreach ($game as $item) {
             if(!array_key_exists($item->id, $result)) {
                 $result[$item->id] = [
