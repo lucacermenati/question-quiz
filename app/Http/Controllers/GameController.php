@@ -90,4 +90,29 @@ class GameController extends Controller
 
         return $this->response;
     }
+
+    public function resetGame(
+        TokenValidator $tokenValidator,
+        GameManager $gameManager,
+        Request $request,
+        ExceptionHandler $exceptionHandler
+    ) {
+        try {
+            $tokenValidator->validate($request->token, [
+                Roles::ROLE_ADMIN,
+                Roles::ROLE_MANAGER,
+            ]);
+
+            $this->setResponseSucceeded($gameManager->reset(
+                $request->token,
+                $request->game_id,
+            ));
+        } catch (\Exception $exception) {
+            $this->setResponseFailed(...$exceptionHandler->handle(
+                $exception
+            ));
+        }
+
+        return $this->response;
+    }
 }

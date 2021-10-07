@@ -19,28 +19,33 @@ class GameManager
 
     public function play($token, $gameId, $questionId, $answerId)
     {
-        $isCorrect = Answer::where([
+        $answer = Answer::where([
             'id' => $answerId,
             'question_id' => $questionId,
         ])->first([
             'is_correct'
         ]);
 
-        $status = $isCorrect ? QuestionStatus::CORRECT : QuestionStatus::INCORRECT
-
         Game::where([
             'token' => $token,
             'game_id' => $gameId,
             'question_id' => $questionId
         ])->update([
-            'status' => $status
+            'status' => $answer->is_correct ? QuestionStatus::CORRECT : QuestionStatus::INCORRECT
         ]);
 
         return $this->gameRetriever->get($token, $gameId);
     }
 
-    public function reset($gameId)
+    public function reset($token, $gameId)
     {
-        return;
+        Game::where([
+            'token' => $token,
+            'game_id' => $gameId,
+        ])->update([
+            'status' => QuestionStatus::NOT_ANSWERED
+        ]);
+
+        return $this->gameRetriever->get($token, $gameId);
     }
 }
