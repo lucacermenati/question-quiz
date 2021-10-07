@@ -31,3 +31,8 @@ Route::post('/user', [\App\Http\Controllers\UserController::class, 'createUser']
 Route::post('/question', [\App\Http\Controllers\QuestionController::class, 'createQuestion']);
 Route::put('/question/{id}', [\App\Http\Controllers\QuestionController::class, 'updateQuestion']);
 Route::get('/questions', [\App\Http\Controllers\QuestionController::class, 'listQuestions']);
+
+// GAME
+Route::post('/game', [\App\Http\Controllers\GameController::class, 'createGame']);
+Route::get('/game', [\App\Http\Controllers\GameController::class, 'getGame']);
+

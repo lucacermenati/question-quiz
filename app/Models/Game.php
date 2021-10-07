@@ -11,7 +11,13 @@ class Game extends CustomModel
 
     public $fillable = [
         'token',
-        'question',
-        'status'
+        'question_id',
+        'status',
+        'active',
     ];
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
 }

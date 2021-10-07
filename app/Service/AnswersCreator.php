@@ -15,7 +15,7 @@ class AnswersCreator
     public function createCorrect($questionId, $correctAnswer)
     {
         $answer = Answer::create([
-            'question' => $questionId,
+            'question_id' => $questionId,
             'text' => $correctAnswer,
             'is_correct' => true
         ]);
@@ -27,7 +27,7 @@ class AnswersCreator
     {
         foreach ($wrongAnswers as $wrongAnswer) {
             $answer = Answer::create([
-                'question' => $questionId,
+                'question_id' => $questionId,
                 'text' => $wrongAnswer,
                 'is_correct' => false
             ]);

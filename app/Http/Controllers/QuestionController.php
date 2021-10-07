@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enum\Roles;
-use App\Http\Resources\QuestionCollectionResource;
 use App\Service\ExceptionHandler;
-use App\Service\QuestionCollectionBeautifier;
 use App\Service\QuestionCreator;
 use App\Service\QuestionRequestValidator;
 use App\Service\QuestionRetriever;
@@ -36,7 +34,9 @@ class QuestionController extends Controller
                 $request->wrongAnswers
             );
 
-            $this->setResponseSucceeded($question);
+            $this->setResponseSucceeded([
+                "question_id" => $question->id
+            ]);
         } catch (\Exception $exception) {
             $this->setResponseFailed(...$exceptionHandler->handle(
                 $exception
@@ -49,7 +49,6 @@ class QuestionController extends Controller
     public function listQuestions(
         TokenValidator $tokenValidator,
         QuestionRetriever $questionRetriever,
-        QuestionCollectionBeautifier $questionCollectionBeautifier,
         Request $request,
         ExceptionHandler $exceptionHandler
     ) {
@@ -59,9 +58,7 @@ class QuestionController extends Controller
                 Roles::ROLE_MANAGER
             ]);
 
-            $questions = $questionRetriever->getAllWithAnswers();
-
-            $this->setResponseSucceeded($questionCollectionBeautifier->beautify($questions));
+            $this->setResponseSucceeded($questionRetriever->getAll());
         } catch (\Exception $exception) {
             $this->setResponseFailed(...$exceptionHandler->handle(
                 $exception
@@ -83,12 +80,14 @@ class QuestionController extends Controller
                 Roles::ROLE_MANAGER
             ]);
 
-            $this->setResponseSucceeded($questionUpdater->update(
+            $questionUpdater->update(
                 $request->id,
                 $request->question,
                 $request->correctAnswer,
                 $request->wrongAnswers
-            ));
+            );
+
+            $this->setResponseSucceeded();
         } catch (\Exception $exception) {
             $this->setResponseFailed(...$exceptionHandler->handle(
                 $exception
