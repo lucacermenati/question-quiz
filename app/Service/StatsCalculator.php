@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Enum\QuestionStatus;
 use App\Models\Game;
-use Illuminate\Support\Facades\DB;
 
 class StatsCalculator
 {
