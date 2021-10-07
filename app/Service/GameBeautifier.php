@@ -16,11 +16,13 @@ class GameBeautifier
                     "status" => $item->status,
                     "answers" => [[
                         "text" => $item->answer_text,
+                        "answer_id" => $item->answer_id,
                     ]],
                 ];
             } else {
                 $result[$item->id]["answers"][] = [
                     "text" => $item->answer_text,
+                    "answer_id" => $item->answer_id,
                 ];
             }
         }

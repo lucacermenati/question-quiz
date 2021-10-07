@@ -22,15 +22,16 @@ class GameRetriever
         $this->questionRetriever = $questionRetriever;
     }
 
-    public function get($token)
+    public function get($token, $gameId)
     {
         $game =  Game::query()
         ->join('questions', 'questions.id', '=', 'games.question_id')
         ->join('answers', 'questions.id', '=', 'answers.question_id')
         ->where([
-            'token' => $token
+            'token' => $token,
+            'game_id' => $gameId
         ])
-        ->get(["games.*", "questions.*", 'answers.text as answer_text',]);
+        ->get(["games.*", "questions.*", 'answers.text as answer_text', 'answers.id as answer_id']);
 
         return $this->gameBeautifier->beautify($game);
     }

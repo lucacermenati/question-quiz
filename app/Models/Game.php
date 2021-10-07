@@ -11,9 +11,9 @@ class Game extends CustomModel
 
     public $fillable = [
         'token',
+        'game_id',
         'question_id',
         'status',
-        'active',
     ];
 
     public function questions()

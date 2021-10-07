@@ -19,15 +19,19 @@ class GameCreator
 
     public function create($token)
     {
+        $gameId =  uniqid();
+
         foreach ($this->questionRetriever->getAll()['questions'] as $question) {
             $game = Game::create([
                 'token' => $token,
+                'game_id' => $gameId,
                 'question_id' => $question['id'],
                 'status' => QuestionStatus::NOT_ANSWERED,
-                'active' => true,
             ]);
 
             $game->save(); //TODO: bulk insert
         }
+
+        return $gameId;
     }
 }
