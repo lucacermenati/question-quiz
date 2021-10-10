@@ -23,7 +23,7 @@ class QuestionUpdater
             $updates['text'] = $questionText;
         }
 
-        $question = Question::where([
+        Question::where([
             'id' => $questionId
         ])
         ->update($updates);

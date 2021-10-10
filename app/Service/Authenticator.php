@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Exceptions\UserNotFoundException;
 use App\Models\CustomUser;
-use App\Models\Token;
 
 class Authenticator
 {

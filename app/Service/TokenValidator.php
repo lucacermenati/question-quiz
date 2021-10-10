@@ -18,7 +18,6 @@ class TokenValidator
         ])->first();
 
         $this->validateToken($token);
-        $this->validateExpiration($token->updated_at);
         $this->validateRole($token->role, $validRoles);
     }
 
@@ -34,12 +33,6 @@ class TokenValidator
         if(!$token) {
             throw new TokenNotFoundException();
         }
-    }
-
-    public function validateExpiration($updatedAt)
-    {
-        //TODO complete
-        return;
     }
 
     public function validateRole($role, $validRoles)

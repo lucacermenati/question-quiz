@@ -10,16 +10,6 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function getUser()
-    {
-        return;
-    }
-
-    public function getUsers()
-    {
-        return;
-    }
-
     public function createUser(
         TokenValidator $tokenValidator,
         UserCreator $userCreator,
@@ -43,10 +33,5 @@ class UserController extends Controller
         }
 
         return $this->response;
-    }
-
-    public function updateUser()
-    {
-        return;
     }
 }

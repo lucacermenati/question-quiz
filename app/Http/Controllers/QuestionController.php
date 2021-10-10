@@ -26,12 +26,12 @@ class QuestionController extends Controller
                 Roles::ROLE_MANAGER
             ]);
 
-            $questionRequestValidator->validate($request);
+            $questionRequestValidator->validateCreation($request);
 
             $question = $questionCreator->create(
                 $request->question,
-                $request->correctAnswer,
-                $request->wrongAnswers
+                $request->correct_answer,
+                $request->wrong_answers
             );
 
             $this->setResponseSucceeded([
@@ -70,6 +70,7 @@ class QuestionController extends Controller
 
     public function updateQuestion(
         TokenValidator $tokenValidator,
+        QuestionRequestValidator $questionRequestValidator,
         QuestionUpdater $questionUpdater,
         Request $request,
         ExceptionHandler $exceptionHandler
@@ -80,11 +81,13 @@ class QuestionController extends Controller
                 Roles::ROLE_MANAGER
             ]);
 
+            $questionRequestValidator->validateUpdate($request);
+
             $questionUpdater->update(
                 $request->id,
                 $request->question,
-                $request->correctAnswer,
-                $request->wrongAnswers
+                $request->correct_answer,
+                $request->wrong_answers
             );
 
             $this->setResponseSucceeded();

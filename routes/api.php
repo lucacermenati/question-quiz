@@ -22,9 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/token', [\App\Http\Controllers\CustomAuthenticationController::class, 'getToken']);
 
 // USER
-Route::get('/user', [\App\Http\Controllers\UserController::class, 'getUser']);
-Route::get('/users', [\App\Http\Controllers\UserController::class, 'getUsers']);
-Route::put('/user', [\App\Http\Controllers\UserController::class, 'updateUser']);
 Route::post('/user', [\App\Http\Controllers\UserController::class, 'createUser']);
 
 // QUESTION

@@ -53,7 +53,7 @@ class GameController extends Controller
 
             $this->setResponseSucceeded($gameRetriever->get(
                 $request->token,
-                $request->game_id,
+                $request->game_id
             ));
         } catch (\Exception $exception) {
             $this->setResponseFailed(...$exceptionHandler->handle(

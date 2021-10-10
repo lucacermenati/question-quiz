@@ -29,7 +29,7 @@ class AnswerUpdater
     public function updateCorrectAnswer($questionId, $correctAnswer)
     {
         Answer::where([
-            'question' => $questionId,
+            'question_id' => $questionId,
             'is_correct' => true,
         ])
         ->update([
@@ -40,7 +40,7 @@ class AnswerUpdater
     public function updateWrongAnswers($questionId, $wrongAnswers)
     {
         Answer::where([
-            'question' => $questionId,
+            'question_id' => $questionId,
             'is_correct' => false,
         ])->delete();
 
