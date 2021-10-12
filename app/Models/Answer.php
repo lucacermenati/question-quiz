@@ -12,6 +12,6 @@ class Answer extends CustomModel
     public $fillable = [
         'text',
         'is_correct',
-        'question_id'
+        'question_id',
     ];
 }

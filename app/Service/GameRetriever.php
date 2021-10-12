@@ -34,7 +34,7 @@ class GameRetriever
         ])
         ->whereIn('status', [
             QuestionStatus::INCORRECT,
-            QuestionStatus::CORRECT,
+            QuestionStatus::NOT_ANSWERED,
         ])
         ->get(["games.*", "questions.*", 'answers.text as answer_text', 'answers.id as answer_id']);
 

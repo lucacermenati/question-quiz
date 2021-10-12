@@ -6,6 +6,7 @@ use App\Enum\Roles;
 use App\Service\ExceptionHandler;
 use App\Service\GameCreator;
 use App\Service\GameManager;
+use App\Service\GameRequestValidator;
 use App\Service\GameRetriever;
 use App\Service\StatsCalculator;
 use App\Service\TokenValidator;
@@ -40,6 +41,7 @@ class GameController extends Controller
 
     public function getGame(
         TokenValidator $tokenValidator,
+        GameRequestValidator $gameRequestValidator,
         GameRetriever $gameRetriever,
         Request $request,
         ExceptionHandler $exceptionHandler
@@ -50,6 +52,8 @@ class GameController extends Controller
                 Roles::ROLE_MANAGER,
                 Roles::ROLE_PLAYER
             ]);
+
+            $gameRequestValidator->validate($request);
 
             $this->setResponseSucceeded($gameRetriever->get(
                 $request->token,
@@ -66,6 +70,7 @@ class GameController extends Controller
 
     public function playGame(
         TokenValidator $tokenValidator,
+        GameRequestValidator $gameRequestValidator,
         GameManager $gameManager,
         Request $request,
         ExceptionHandler $exceptionHandler
@@ -77,11 +82,13 @@ class GameController extends Controller
                 Roles::ROLE_PLAYER
             ]);
 
+            $gameRequestValidator->validatePlay($request);
+
             $this->setResponseSucceeded($gameManager->play(
                 $request->token,
                 $request->game_id,
                 $request->question_id,
-                $request->answer_id,
+                $request->answer_id
             ));
         } catch (\Exception $exception) {
             $this->setResponseFailed(...$exceptionHandler->handle(
