@@ -35,6 +35,17 @@ class GameRequestValidator
         $this->validateAnswer($request->question_id, $request->answer_id);
     }
 
+    public function validateGameExists($request)
+    {
+        $game = Game::where([
+            'game_id' => $request->game_id,
+        ])->first();
+
+        if (!$game) {
+            throw new GameNotFoundException($request->game_id);
+        }
+    }
+
     private function validateGame($token, $gameId)
     {
         $game = Game::where([

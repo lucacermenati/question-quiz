@@ -37,15 +37,12 @@ class GameManager
         return $this->gameRetriever->get($token, $gameId);
     }
 
-    public function reset($token, $gameId)
+    public function reset($gameId)
     {
         Game::where([
-            'token' => $token,
             'game_id' => $gameId,
         ])->update([
             'status' => QuestionStatus::NOT_ANSWERED
         ]);
-
-        return $this->gameRetriever->get($token, $gameId);
     }
 }

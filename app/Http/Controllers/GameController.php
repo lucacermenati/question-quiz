@@ -112,10 +112,9 @@ class GameController extends Controller
                 Roles::ROLE_MANAGER,
             ]);
 
-            $gameRequestValidator->validate($request);
+            $gameRequestValidator->validateGameExists($request);
 
             $this->setResponseSucceeded($gameManager->reset(
-                $request->token,
                 $request->game_id
             ));
         } catch (\Exception $exception) {
