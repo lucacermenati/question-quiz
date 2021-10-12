@@ -9,7 +9,6 @@ use App\Exceptions\GameNotFoundException;
 use App\Exceptions\QuestionOnGameNotFoundException;
 use App\Models\Answer;
 use App\Models\Game;
-use App\Models\Question;
 
 class GameRequestValidator
 {
@@ -24,6 +23,7 @@ class GameRequestValidator
 
     /**
      * @param $request
+     * @throws AlreadyCorrectAnswerException
      * @throws AnswerNotFoundException
      * @throws GameNotFoundException
      * @throws QuestionOnGameNotFoundException
@@ -35,7 +35,7 @@ class GameRequestValidator
         $this->validateAnswer($request->question_id, $request->answer_id);
     }
 
-    public function validateGame($token, $gameId)
+    private function validateGame($token, $gameId)
     {
         $game = Game::where([
             'token' => $token,
@@ -47,7 +47,7 @@ class GameRequestValidator
         }
     }
 
-    public function validateQuestion($token, $gameId, $questionId)
+    private function validateQuestion($token, $gameId, $questionId)
     {
         $game = Game::where([
             'token' => $token,
@@ -64,7 +64,7 @@ class GameRequestValidator
         }
     }
 
-    public function validateAnswer($questionId, $answerId)
+    private function validateAnswer($questionId, $answerId)
     {
         $answer = Answer::where([
             'id' => $answerId

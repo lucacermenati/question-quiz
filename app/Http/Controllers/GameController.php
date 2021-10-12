@@ -101,6 +101,7 @@ class GameController extends Controller
 
     public function resetGame(
         TokenValidator $tokenValidator,
+        GameRequestValidator $gameRequestValidator,
         GameManager $gameManager,
         Request $request,
         ExceptionHandler $exceptionHandler
@@ -111,9 +112,11 @@ class GameController extends Controller
                 Roles::ROLE_MANAGER,
             ]);
 
+            $gameRequestValidator->validate($request);
+
             $this->setResponseSucceeded($gameManager->reset(
                 $request->token,
-                $request->game_id,
+                $request->game_id
             ));
         } catch (\Exception $exception) {
             $this->setResponseFailed(...$exceptionHandler->handle(
@@ -126,6 +129,7 @@ class GameController extends Controller
 
     public function getStats(
         TokenValidator $tokenValidator,
+        GameRequestValidator $gameRequestValidator,
         StatsCalculator $statsCalculator,
         Request $request,
         ExceptionHandler $exceptionHandler
@@ -136,6 +140,8 @@ class GameController extends Controller
                 Roles::ROLE_MANAGER,
                 Roles::ROLE_PLAYER,
             ]);
+
+            $gameRequestValidator->validate($request);
 
             $token = $request->token;
             $gameId = $request->game_id;
